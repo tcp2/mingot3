@@ -6,6 +6,6 @@
   "frontend:build": "npm run build:fe",
   "frontend:dev:watcher": "npm run dev:fe",
   "frontend:dev:serverUrl": "http://localhost:5173",
-  "wailsjsdir": "./src/frontend/wailsjs",
+  "wailsjsdir": "./frontend/src/wailsjs",
   "version": "2"
 }
