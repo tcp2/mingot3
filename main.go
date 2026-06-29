@@ -19,7 +19,7 @@ import (
 //go:embed assets
 var assets embed.FS
 
-//go:embed frontend/dist
+//go:embed all:frontend/dist
 var frontendDist embed.FS
 
 func main() {
@@ -31,12 +31,12 @@ func main() {
 	app := newApp()
 
 	err := wails.Run(&options.App{
-		Title:            "Mingot",
-		Width:            1280,
-		Height:           800,
-		MinWidth:         960,
-		MinHeight:        600,
-		BackgroundColour: &options.RGBA{R: 15, G: 15, B: 26, A: 255},
+		Title:             "Mingot",
+		Width:             1280,
+		Height:            800,
+		MinWidth:          960,
+		MinHeight:         600,
+		BackgroundColour:  &options.RGBA{R: 15, G: 15, B: 26, A: 255},
 		HideWindowOnClose: true,
 		AssetServer: &assetserver.Options{
 			Assets: frontendDist,

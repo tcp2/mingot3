@@ -4,6 +4,8 @@ import {main} from '../models';
 
 export function ArrangeWindows(arg1:number,arg2:number):Promise<main.apiResp_mingot_internal_profile_ArrangeResult_>;
 
+export function ClearToken():Promise<main.apiResp_interface____>;
+
 export function CreateProfile():Promise<main.apiResp_mingot_internal_profile_CreateResult_>;
 
 export function DeleteProfile(arg1:string):Promise<main.apiResp_interface____>;
@@ -13,6 +15,10 @@ export function ExportProfile(arg1:string):Promise<main.apiResp___uint8_>;
 export function ImportProfile(arg1:Array<number>,arg2:boolean):Promise<main.apiResp_mingot_internal_profile_ImportResult_>;
 
 export function ListProfiles():Promise<main.apiResp___mingot_internal_profile_Summary_>;
+
+export function ScanTokens():Promise<main.apiResp___main_TokenInfo_>;
+
+export function SelectToken(arg1:string):Promise<main.apiResp_interface____>;
 
 export function StartProfile(arg1:string,arg2:number,arg3:number):Promise<main.apiResp_mingot_internal_profile_StartResult_>;
 

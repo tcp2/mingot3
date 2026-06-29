@@ -96,4 +96,3 @@ func Create(sourceDir string) ([]byte, error) {
 	}
 	return buf.Bytes(), zw.Close()
 }
-

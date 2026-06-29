@@ -3,10 +3,15 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 
 	"mingot/internal/profile"
+	"mingot/internal/storage"
+	"mingot/internal/util"
 )
 
 // App là struct được Wails bind, tất cả exported method đều thành JS binding.
@@ -68,6 +73,78 @@ func (a *App) ExportProfile(id string) apiResp[[]byte] {
 func (a *App) ArrangeWindows(screenW, screenH int) apiResp[*profile.ArrangeResult] {
 	data, err := a.manager.ArrangeWindows(screenW, screenH)
 	return wrap(data, err)
+}
+
+// ─── Settings / Token Bindings ───────────────────────────────────────────────
+
+type TokenInfo struct {
+	Token  string `json:"token"`
+	UserID string `json:"userId"`
+	Active bool   `json:"active"`
+}
+
+// ScanTokens quét qua các thư mục LevelDB của GoLogin trên máy để tìm các token hiện có.
+func (a *App) ScanTokens() apiResp[[]TokenInfo] {
+	// Quét các directory token thông dụng
+	tokensFromLog := util.ExtractGoLoginTokens(storage.TokenStoreDirs())
+	activeToken := storage.GetGoLoginToken()
+
+	var result []TokenInfo
+	seen := make(map[string]bool)
+
+	// Đưa token active vào trước (nếu có)
+	if activeToken != "" {
+		parts := strings.Split(activeToken, ".")
+		var userID string
+		if len(parts) == 3 {
+			// Giải mã claim để lấy userID (sub)
+			if payload, err := base64.RawURLEncoding.DecodeString(parts[1]); err == nil {
+				var claims map[string]interface{}
+				if json.Unmarshal(payload, &claims) == nil {
+					userID, _ = claims["sub"].(string)
+				}
+			}
+		}
+
+		displayToken := activeToken
+		if len(displayToken) > 20 {
+			displayToken = displayToken[:10] + "..." + displayToken[len(displayToken)-10:]
+		}
+
+		result = append(result, TokenInfo{
+			Token:  activeToken,
+			UserID: userID,
+			Active: true,
+		})
+		seen[activeToken] = true
+	}
+
+	for _, t := range tokensFromLog {
+		if seen[t.Raw] {
+			continue
+		}
+		seen[t.Raw] = true
+
+		result = append(result, TokenInfo{
+			Token:  t.Raw,
+			UserID: t.UserID,
+			Active: false,
+		})
+	}
+
+	return wrap(result, nil)
+}
+
+// SelectToken lưu token được chọn vào config.json
+func (a *App) SelectToken(token string) apiResp[any] {
+	err := storage.SetGoLoginToken(token)
+	return wrap[any](nil, err)
+}
+
+// ClearToken xoá token đã chọn khỏi config.json
+func (a *App) ClearToken() apiResp[any] {
+	err := storage.SetGoLoginToken("")
+	return wrap[any](nil, err)
 }
 
 // ─── Response wrapper ─────────────────────────────────────────────────────────

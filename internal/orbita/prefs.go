@@ -30,7 +30,7 @@ func buildOrbitaConfig(prefs map[string]any, tz tzInfo, profileToken string) map
 
 	return map[string]any{
 		"intl": map[string]any{
-			"accept_languages":  lang,
+			"accept_languages":   lang,
 			"selected_languages": lang,
 		},
 		"gologin": gologin,
@@ -57,7 +57,7 @@ func buildPrefs(fp GLProfile, tz tzInfo, userID, sessionID, profileName string) 
 		"userPlanName": "Forever Free",
 
 		"navigator": map[string]any{
-			"platform":        fp.Navigator.Platform,
+			"platform":         fp.Navigator.Platform,
 			"max_touch_points": fp.Navigator.MaxTouchPoints,
 		},
 		"userAgent":           fp.Navigator.UserAgent,
@@ -97,19 +97,19 @@ func buildPrefs(fp GLProfile, tz tzInfo, userID, sessionID, profileName string) 
 			"videoInputs":  fp.MediaDevices.VideoInputs,
 		},
 		"plugins": map[string]any{
-			"all_enable":  fp.Plugins.EnableVulnerable,
+			"all_enable":   fp.Plugins.EnableVulnerable,
 			"flash_enable": fp.Plugins.EnableFlash,
 		},
-		"storage":  map[string]any{"enable": fp.Storage.Local},
+		"storage": map[string]any{"enable": fp.Storage.Local},
 		"audioContext": map[string]any{
 			"enable":     fp.AudioContext.Mode != "off",
 			"noiseValue": fp.AudioContext.Noise,
 		},
-		"canvas":     map[string]any{"mode": fp.Canvas.Mode},
-		"canvasMode": fp.Canvas.Mode,
+		"canvas":      map[string]any{"mode": fp.Canvas.Mode},
+		"canvasMode":  fp.Canvas.Mode,
 		"canvasNoise": fp.Canvas.Noise,
 
-		"startupUrl":  startupURL,
+		"startupUrl":   startupURL,
 		"startup_urls": startupURLs,
 
 		"geolocation": map[string]any{
@@ -137,26 +137,29 @@ type GLProfile struct {
 	Geolocation  Geolocation  `json:"geolocation"`
 	StartURL     string       `json:"startUrl"`
 	// Fields được copy thẳng vào orbita.config
-	WebRTC    any `json:"webRTC"`
-	WebGpu    any `json:"webGpu"`
+	WebRTC      any `json:"webRTC"`
+	WebGpu      any `json:"webGpu"`
 	WebGLParams any `json:"webglParams"`
 }
 
 type Navigator struct {
-	Platform            string  `json:"platform"`
-	UserAgent           string  `json:"userAgent"`
-	Language            string  `json:"language"`
-	Resolution          string  `json:"resolution"`
-	MaxTouchPoints      int     `json:"maxTouchPoints"`
-	HardwareConcurrency int     `json:"hardwareConcurrency"`
-	DeviceMemory        int     `json:"deviceMemory"`
-	DoNotTrack          bool    `json:"doNotTrack"`
+	Platform            string `json:"platform"`
+	UserAgent           string `json:"userAgent"`
+	Language            string `json:"language"`
+	Resolution          string `json:"resolution"`
+	MaxTouchPoints      int    `json:"maxTouchPoints"`
+	HardwareConcurrency int    `json:"hardwareConcurrency"`
+	DeviceMemory        int    `json:"deviceMemory"`
+	DoNotTrack          bool   `json:"doNotTrack"`
 }
-type WebGLField   struct{ Mode, Noise string }
-type WebGLMeta    struct{ Vendor, Renderer, Mode string }
-type ClientRects  struct{ Mode string; Noise any }
-type CanvasField  struct{ Mode, Noise string }
-type AudioCtx     struct{ Mode, Noise string }
+type WebGLField struct{ Mode, Noise string }
+type WebGLMeta struct{ Vendor, Renderer, Mode string }
+type ClientRects struct {
+	Mode  string
+	Noise any
+}
+type CanvasField struct{ Mode, Noise string }
+type AudioCtx struct{ Mode, Noise string }
 type MediaDevices struct {
 	EnableMasking bool   `json:"enableMasking"`
 	UID           string `json:"uid"`
@@ -164,8 +167,8 @@ type MediaDevices struct {
 	AudioOutputs  int    `json:"audioOutputs"`
 	VideoInputs   int    `json:"videoInputs"`
 }
-type Plugins    struct{ EnableVulnerable, EnableFlash bool }
-type Storage    struct{ Local bool }
+type Plugins struct{ EnableVulnerable, EnableFlash bool }
+type Storage struct{ Local bool }
 type Geolocation struct{ Mode string }
 
 // tzInfo là timezone response từ geo.myip.link.

@@ -6,6 +6,10 @@ export function ArrangeWindows(arg1, arg2) {
   return window['go']['main']['App']['ArrangeWindows'](arg1, arg2);
 }
 
+export function ClearToken() {
+  return window['go']['main']['App']['ClearToken']();
+}
+
 export function CreateProfile() {
   return window['go']['main']['App']['CreateProfile']();
 }
@@ -24,6 +28,14 @@ export function ImportProfile(arg1, arg2) {
 
 export function ListProfiles() {
   return window['go']['main']['App']['ListProfiles']();
+}
+
+export function ScanTokens() {
+  return window['go']['main']['App']['ScanTokens']();
+}
+
+export function SelectToken(arg1) {
+  return window['go']['main']['App']['SelectToken'](arg1);
 }
 
 export function StartProfile(arg1, arg2, arg3) {

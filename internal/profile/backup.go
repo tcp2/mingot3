@@ -1,4 +1,3 @@
-// import.go — Import profile từ ZIP bytes.
 package profile
 
 import (
@@ -8,9 +7,25 @@ import (
 	"path/filepath"
 	"strings"
 
+	"mingot/internal/backup"
 	"mingot/internal/util"
 	pkgzip "mingot/internal/zip"
 )
+
+// Export backup profile thành ZIP bytes để frontend trigger download.
+// Lỗi nếu profile đang chạy.
+func (m *Manager) Export(id string) ([]byte, error) {
+	profilePath := filepath.Join(gologinDir(), id)
+
+	if _, err := os.Stat(profilePath); err != nil {
+		return nil, notFound("profile không tồn tại")
+	}
+	if isRunning(profilePath) {
+		return nil, fmt.Errorf("chỉ có thể backup khi profile đang tắt")
+	}
+
+	return backup.Pack(profilePath)
+}
 
 // Import giải nén ZIP, phát hiện profileID, copy vào GOLOGIN_DIR.
 // overwrite = true cho phép ghi đè nếu profile đã tồn tại.

@@ -3,7 +3,7 @@ import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 export default {
 	preprocess: vitePreprocess(),
 	onwarn: (warning, handler) => {
-		if (warning.code === "css_unused_selector") return;
-		handler(warning);
+		// Tắt toàn bộ warning của svelte để console sạch hơn
+		return;
 	},
 };

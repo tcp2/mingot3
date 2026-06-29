@@ -103,6 +103,21 @@ export const api = {
 	): Promise<void> {
 		await wailsCall("ArrangeWindows", screenWidth, screenHeight);
 	},
+
+	/** Scan GoLogin tokens from local PC */
+	async scanTokens(): Promise<Array<{ token: string; userId: string; active: boolean }>> {
+		return await wailsCall("ScanTokens");
+	},
+
+	/** Select a GoLogin token to persist */
+	async selectToken(token: string): Promise<void> {
+		await wailsCall("SelectToken", token);
+	},
+
+	/** Clear selected GoLogin token */
+	async clearToken(): Promise<void> {
+		await wailsCall("ClearToken");
+	},
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

@@ -15,6 +15,9 @@ import (
 	"mingot/internal/util"
 )
 
+// ErrNoSelectedToken được trả khi user chưa chọn token trong Settings.
+var ErrNoSelectedToken = errors.New("chưa chọn GoLogin token — vào Settings để chọn token")
+
 const tzURL = "https://geo.myip.link"
 
 // Sentinel errors.
@@ -41,10 +44,18 @@ type Launcher struct {
 
 // New tạo Launcher cho profile mới (existingID = "").
 // New tạo Launcher cho profile hiện có nếu existingID != "".
+// Trả về ErrNoSelectedToken nếu user chưa chọn token trong Settings.
 func New(existingID string) (*Launcher, error) {
 	gologinDir := storage.GologinDir()
+
+	// Bắt buộc phải có selected token từ config.json — không fallback về auto-detect.
+	selected := storage.GetGoLoginToken()
+	if selected == "" {
+		return nil, ErrNoSelectedToken
+	}
+
 	l := &Launcher{
-		auth:       util.ExtractGoLoginTokens(storage.TokenStoreDirs()),
+		auth:       []util.Token{{Raw: selected}},
 		resolution: "1920x1080",
 	}
 
@@ -372,7 +383,9 @@ func fetchTZ() (tzInfo, error) {
 
 func fetchFirstProfileID(token string) (string, error) {
 	var resp struct {
-		Profiles []struct{ ID string `json:"id"` } `json:"profiles"`
+		Profiles []struct {
+			ID string `json:"id"`
+		} `json:"profiles"`
 	}
 	headers := gologinHeaders(token)
 	if err := apiGet("https://api.gologin.com/browser/v2", headers, &resp); err != nil {
@@ -391,7 +404,9 @@ func refreshFingerprint(profileID, token string) error {
 
 func fetchProfileToken(profileID, token string) (string, error) {
 	url := fmt.Sprintf("https://api.gologin.com/browser/features/%s/profile-params-for-orbita-token", profileID)
-	var resp struct{ Token string `json:"token"` }
+	var resp struct {
+		Token string `json:"token"`
+	}
 	if err := apiGet(url, map[string]string{"Authorization": "Bearer " + token, "User-Agent": "Selenium-API"}, &resp); err != nil {
 		return "", err
 	}

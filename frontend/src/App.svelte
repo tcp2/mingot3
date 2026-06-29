@@ -2,9 +2,13 @@
 import { onMount } from "svelte";
 import "./app.css";
 import Header from "./components/Header.svelte";
+import SettingsModal from "./components/SettingsModal.svelte";
 import ProfileListItem from "./components/ProfileListItem.svelte";
 import Toast from "./components/Toast.svelte";
 import { api, onProfileEvent } from "./lib/api.js";
+
+let showSettingsModal = false;
+
 
 import {
 	loading,
@@ -435,7 +439,7 @@ async function checkAllStatuses() {
 </script>
 
 <div class="app-container">
-  <Header />
+  <Header on:openSettings={() => showSettingsModal = true} />
 
   <main style="padding-bottom: 80px;">
     <div class="toolbar">
@@ -681,4 +685,6 @@ async function checkAllStatuses() {
 
     <Toast toasts={$toasts} />
   </main>
+  
+  <SettingsModal isOpen={showSettingsModal} onClose={() => showSettingsModal = false} />
 </div>

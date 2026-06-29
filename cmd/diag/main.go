@@ -34,7 +34,6 @@ func checkPaths() {
 		path  string
 	}{
 		{"Browser exe  ", storage.BrowserExe()},
-		{"Zero profile ", storage.ZeroFile()},
 		{"Profiles dir ", storage.GologinDir()},
 	}
 
