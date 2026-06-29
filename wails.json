@@ -1,0 +1,11 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "Mingot",
+  "outputfilename": "mingot",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build:fe",
+  "frontend:dev:watcher": "npm run dev:fe",
+  "frontend:dev:serverUrl": "http://localhost:5173",
+  "wailsjsdir": "./src/frontend/wailsjs",
+  "version": "2"
+}

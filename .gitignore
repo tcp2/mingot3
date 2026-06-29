@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+*.exe
+*.log
+.env
+.idea/
+.vscode/
+.agents/
+profiles/
+gologin/
+temp/
+tmp/
+test-export.zip
+*.local
+release/
+.DS_Store

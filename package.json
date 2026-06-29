@@ -1,0 +1,28 @@
+{
+	"name": "mingot3",
+	"version": "1.0.0",
+	"description": "Browser Profile Manager",
+	"scripts": {
+		"dev:fe": "vite dev",
+		"build:fe": "vite build",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"check": "biome check .",
+		"format": "biome format --write ."
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "module",
+	"dependencies": {},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.1",
+		"@sveltejs/adapter-node": "^5.5.7",
+		"@sveltejs/vite-plugin-svelte": "^7.1.2",
+		"@types/node": "^26.0.1",
+		"svelte": "^5.56.3",
+		"typescript": "^6.0.3",
+		"vite": "^8.1.0",
+		"vitest": "^4.1.9"
+	}
+}
